@@ -59,6 +59,8 @@
   }
 
   function makeMove(index) {
+    // pequeño cambio: registrar en consola el intento de movimiento
+    console.log(`makeMove called for index ${index} by player ${currentPlayer}`);
     if (cells[index].textContent === '' && !gameOver) {
       cells[index].textContent = currentPlayer;
       if (checkWin(currentPlayer)) {
