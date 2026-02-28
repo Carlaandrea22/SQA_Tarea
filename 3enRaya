@@ -73,22 +73,29 @@
       }
     }
   }
+// Método más limpio para verificar ganador
+function checkWin(player) {
+  const wins = [
+    [0,1,2],[3,4,5],[6,7,8], // filas
+    [0,3,6],[1,4,7],[2,5,8], // columnas
+    [0,4,8],[2,4,6]          // diagonales
+  ];
+  // Devuelve la combinación ganadora si existe, o false
+  return wins.find(combo => combo.every(i => cells[i].textContent === player)) || false;
+}
 
-  function checkWin(player) {
-    const wins = [
-      [0,1,2],[3,4,5],[6,7,8], // filas
-      [0,3,6],[1,4,7],[2,5,8], // columnas
-      [0,4,8],[2,4,6]          // diagonales
-    ];
-    return wins.some(combo => combo.every(index => cells[index].textContent === player));
-  }
-
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    cells.forEach(cell => cell.textContent = '');
-    currentPlayer = 'X';
-    gameOver = false;
-    status.textContent = '';
+// Resetear tablero con animación sutil
+document.getElementById('resetBtn').addEventListener('click', () => {
+  cells.forEach(cell => {
+    cell.textContent = '';
+    cell.style.backgroundColor = '';
+    cell.style.color = '';
+    cell.style.transform = 'scale(1)';
   });
+  currentPlayer = 'X';
+  gameOver = false;
+  status.textContent = `Turno de ${currentPlayer}`;
+});
 
   status.textContent = `Turno de ${currentPlayer}`;
 </script>
