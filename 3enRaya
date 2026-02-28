@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>3 en Raya</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+  }
+  h1 {
+    margin-bottom: 20px;
+  }
+  #board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .cell {
+    width: 100px;
+    height: 100px;
+    font-size: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid #333;
+  }
+  #resetBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+
+<h1>3 en Raya</h1>
+<div id="board"></div>
+<button id="resetBtn">Reiniciar</button>
+<p id="status"></p>
+
+<script>
+  const board = document.getElementById('board');
+  const status = document.getElementById('status');
+  let currentPlayer = 'X';
+  let gameOver = false;
+  let cells = [];
+
+  // Crear tablero
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.classList.add('cell');
+    cell.addEventListener('click', () => makeMove(i));
+    board.appendChild(cell);
+    cells.push(cell);
+  }
+
+  function makeMove(index) {
+    if (cells[index].textContent === '' && !gameOver) {
+      cells[index].textContent = currentPlayer;
+      if (checkWin(currentPlayer)) {
+        status.textContent = `¡Jugador ${currentPlayer} gana!`;
+        gameOver = true;
+      } else if (cells.every(cell => cell.textContent !== '')) {
+        status.textContent = "¡Empate!";
+        gameOver = true;
+      } else {
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        status.textContent = `Turno de ${currentPlayer}`;
+      }
+    }
+  }
+
+  function checkWin(player) {
+    const wins = [
+      [0,1,2],[3,4,5],[6,7,8], // filas
+      [0,3,6],[1,4,7],[2,5,8], // columnas
+      [0,4,8],[2,4,6]          // diagonales
+    ];
+    return wins.some(combo => combo.every(index => cells[index].textContent === player));
+  }
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    cells.forEach(cell => cell.textContent = '');
+    currentPlayer = 'X';
+    gameOver = false;
+    status.textContent = '';
+  });
+
+  status.textContent = `Turno de ${currentPlayer}`;
+</script>
+
+</body>
+</html>
